@@ -482,10 +482,10 @@ class Media extends \lithium\core\StaticObject {
 			return null;
 		}
 		if (isset($config['webroot'])) {
-			return $config['webroot'];
+			return realPath($config['webroot']);
 		}
 		if (isset($config['path'])) {
-			return $config['path'] . '/webroot';
+			return realPath($config['path'] . '/webroot');
 		}
 	}
 
