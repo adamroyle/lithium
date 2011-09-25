@@ -973,7 +973,7 @@ class Unit extends \lithium\core\Object {
 	protected function _hasNetwork($config = array()) {
 		$defaults = array(
 			'scheme' => 'http',
-			'host' => 'google.com'
+			'host' => 'lithify.me'
 		);
 		$config += $defaults;
 
