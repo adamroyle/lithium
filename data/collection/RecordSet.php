@@ -358,7 +358,16 @@ class RecordSet extends \lithium\data\Collection {
 					$dataMap[$name] = $record;
 					continue;
 				}
-				$dataMap[$name][] = $record;
+
+				// create an empty array in case there
+				// are no non-empty records
+				if (!array_key_exists($name, $dataMap)) {
+					$dataMap[$name] = array();
+				}
+
+				if (!$this->_empty($record)) {
+					$dataMap[$name][] = $record;
+				}
 			}
 		} while ($data = $this->_result->next());
 
@@ -377,6 +386,20 @@ class RecordSet extends \lithium\data\Collection {
 			$relationships[$field] = $conn->item($relModel, $rel, $options);
 		}
 		return $conn->item($primary, $main, $options + compact('relationships'));
+	}
+
+	protected function _empty($data) {
+		if (empty($data)) return true;
+		foreach ($data as &$value) {
+			if (is_array($value)) {
+				if (!$this->_empty($value)) {
+					return false;
+				}
+			} else if (!empty($value)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	protected function _columnMap() {
